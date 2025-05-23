@@ -1,0 +1,40 @@
+{
+  "compilerOptions": {
+    // "declaration": true, // Generates type declaration files (.d.ts)
+    // "emitDeclarationOnly": true, // Only Generates type declaration files (.d.ts) and not the actual JS files
+    // "allowImportingTsExtensions": true, // Allows importing .ts files with extensions
+    // "declarationDir": "./dist/types", // Outputs type declaration files to dist/types folder
+    "importHelpers": true, // Import helper functions from tslib to reduce code duplication
+    "lib": ["esnext", "dom"], // Includes type definitions for the latest ECMAScript features
+    "target": "ES6", // Outputs the ts code to js ES6
+    "module": "CommonJS", // Specifies the module code generation. The ESNext module is used so ts imports are not transpiled to require
+    "moduleResolution": "node", // Uses Node.js module resolution strategy
+    "baseUrl": ".", // Base directory to resolve non-relative module names
+    "outDir": "./dist", // Outputs to dist folder
+    "rootDir": "./src", // Only converts src folder files to js
+    "strict": true, // Enables all strict type-checking options
+    "noImplicitAny": true, // Raises error on expressions and declarations with an implied 'any' type
+    "noUnusedLocals": true, // Reports errors on unused local variables
+    "noUnusedParameters": true, // Reports errors on unused parameters
+    "esModuleInterop": true, // Enables interoperability between CommonJS and ES Modules
+    "sourceMap": true, // Generates corresponding .map files for debugging and can be used to turn back compiled js files to ts
+    "alwaysStrict": true, // Parse in strict mode and emit "use strict" for each source file
+    "experimentalDecorators": true, // Enables experimental support for ES7 decorators
+    "emitDecoratorMetadata": true, // Enables the experimental support for emitting type metadata for decorators
+    "allowSyntheticDefaultImports": true, // Allows default imports from modules with no default export
+    "forceConsistentCasingInFileNames": true, // Disallows inconsistently-cased references to the same file
+    "noEmitOnError": true, // Dont generate output if any error is detected
+    "pretty": true, // Prints readable output to the console
+    "resolveJsonModule": true, // Allows importing JSON files
+    // "skipLibCheck": true,
+    "plugins": [
+      { "transform": "typescript-transform-paths" }, // Apply the plugin during the compilation process to compile configured paths
+      { "transform": "typescript-transform-paths", "afterDeclarations": true } // Apply the plugin after generating declaration files
+    ],
+    "paths": {
+      "@authentication/*": ["src/*"]
+    }
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "**/*.test.ts", "**/*.spec.ts", "**/__tests__/**"]
+}

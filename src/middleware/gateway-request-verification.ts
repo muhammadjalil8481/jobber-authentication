@@ -5,7 +5,7 @@ import fs from "fs";
 import { NotAuthorizedError } from "@muhammadjalil8481/jobber-shared";
 import { log } from "@authentication/logger";
 
-const publicKey = fs.readFileSync("../public.pem", "utf-8");
+const publicKey = fs.readFileSync("./public.pem", "utf-8");
 
 export const GatewayRequestVerification = async (
   req: Request,

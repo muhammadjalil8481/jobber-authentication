@@ -29,3 +29,5 @@ export async function checkDatabaseConnection() {
     process.exit(1);
   }
 }
+
+export { sequelize };

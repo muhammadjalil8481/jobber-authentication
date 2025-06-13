@@ -1,18 +1,9 @@
 import { Sequelize } from "sequelize";
-import { log } from "./logger";
-import { config } from "./config";
+import { log } from "../logger";
+import { sequelieConfig } from "./sequelize.config";
 
 const sequelize = new Sequelize({
-  dialect: "mysql",
-  host: config.MYSQL_HOST,
-  port: Number(config.MYSQL_PORT),
-  username: config.MYSQL_USER,
-  password: config.MYSQL_PASSWORD,
-  database: config.MYSQL_DATABASE,
-  logging: false,
-  dialectOptions: {
-    multipleStatements: true,
-  },
+  ...sequelieConfig.development,
 });
 
 export async function checkDatabaseConnection() {

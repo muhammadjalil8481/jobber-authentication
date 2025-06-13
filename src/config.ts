@@ -20,6 +20,11 @@ const envList = [
   "CLIENT_URL",
   "ELASTIC_SEARCH_URL",
   "ELASTIC_APM_SERVER_URL",
+  "CLOUD_NAME",
+  "CLOUD_API_KEY",
+  "CLOUD_API_SECRET" 
 ] as const;
+
+
 
 export const config = createConfig(envList);

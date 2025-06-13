@@ -150,3 +150,5 @@ dist
 services
 docker-volumes
 secrets.md
+
+config.json

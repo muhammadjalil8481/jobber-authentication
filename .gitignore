@@ -147,7 +147,6 @@ dist
 .npmrc
 # Jenkinsfile
 
-services
 docker-volumes
 secrets.md
 

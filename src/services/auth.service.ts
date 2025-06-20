@@ -7,8 +7,9 @@ import {
   IAuthDocument,
 } from "@muhammadjalil8481/jobber-shared";
 import { sign } from "jsonwebtoken";
-import { lowerCase, omit } from "lodash";
+import { omit } from "lodash";
 import { Model, Op } from "sequelize";
+import type { StringValue } from "ms";
 
 export async function createAuthUser(
   data: IAuthDocument
@@ -41,7 +42,7 @@ export async function getAuthUserById(id: number): Promise<IAuthDocument> {
       exclude: ["password"],
     },
   })) as Model;
-  return user.dataValues;
+  return user?.dataValues;
 }
 
 export async function getAuthUserByUsernameOrEmail(
@@ -50,10 +51,7 @@ export async function getAuthUserByUsernameOrEmail(
 ): Promise<IAuthDocument> {
   const user: Model = (await AuthModel.findOne({
     where: {
-      [Op.or]: [
-        { username: firstLetterUppercase(username) },
-        { email: lowerCase(email) },
-      ],
+      [Op.or]: [{ username: firstLetterUppercase(username) }, { email }],
     },
   })) as Model;
   return user?.dataValues;
@@ -67,7 +65,7 @@ export async function getAuthUserByUsername(
       username: firstLetterUppercase(username),
     },
   })) as Model;
-  return user.dataValues;
+  return user?.dataValues;
 }
 
 export async function getAuthUserByEmail(
@@ -75,10 +73,10 @@ export async function getAuthUserByEmail(
 ): Promise<IAuthDocument> {
   const user: Model = (await AuthModel.findOne({
     where: {
-      email: lowerCase(email),
+      email,
     },
   })) as Model;
-  return user.dataValues;
+  return user?.dataValues;
 }
 
 export async function getAuthUserByVerificationToken(
@@ -92,7 +90,7 @@ export async function getAuthUserByVerificationToken(
       exclude: ["password"],
     },
   })) as Model;
-  return user.dataValues;
+  return user?.dataValues;
 }
 
 export async function getAuthUserByPasswordToken(
@@ -100,16 +98,13 @@ export async function getAuthUserByPasswordToken(
 ): Promise<IAuthDocument> {
   const user: Model = (await AuthModel.findOne({
     where: {
-      [Op.and]: [
-        { passwordResetToken: token },
-        { passwordResetExpires: { [Op.gt]: new Date() } },
-      ],
+      [Op.and]: [{ passwordResetToken: token }],
     },
-    attributes: {
-      exclude: ["password"],
-    },
+    // attributes: {
+    //   exclude: ["password"],
+    // },
   })) as Model;
-  return user.dataValues;
+  return user?.dataValues;
 }
 
 export async function updateVerifyEmailField(
@@ -156,13 +151,13 @@ export async function updatePassword(
   );
 }
 
-export function signToken(id: number, email: string, username: string): string {
-  return sign(
-    {
-      id,
-      username,
-      email,
-    },
-    config.JWT_TOKEN_SECRET
-  );
+export function signToken(
+  payload: object,
+  maxAge: StringValue,
+  // jwtId: string
+): string {
+  return sign(payload, config.JWT_TOKEN_SECRET, {
+    expiresIn: maxAge,
+    // jwtid: jwtId,
+  });
 }

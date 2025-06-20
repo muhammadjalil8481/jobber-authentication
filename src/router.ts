@@ -1,5 +1,5 @@
 import { Request, Response, Router } from "express";
-import { router as authRouter } from "./routes/auth";
+import { authRouter } from "./routes/auth";
 import { GatewayRequestVerification } from "@muhammadjalil8481/jobber-shared";
 import { log } from "./logger";
 import fs from "fs";
@@ -11,7 +11,7 @@ const gatewayMiddleware = GatewayRequestVerification(log, publicKey);
 
 const router = Router();
 
-router.use(gatewayMiddleware,authRouter);
+router.use(gatewayMiddleware, authRouter);
 
 router.use("*", (req: Request, res: Response) => {
   const url = `${req.protocol}://${req.get("host")}${req.originalUrl}`;

@@ -50,7 +50,7 @@
   },
   "dependencies": {
     "@elastic/elasticsearch": "^8.17.1",
-    "@muhammadjalil8481/jobber-shared": "^0.7.27",
+    "@muhammadjalil8481/jobber-shared": "^0.7.32",
     "amqplib": "^0.10.8",
     "bcrypt": "^5.1.1",
     "chalk": "^5.4.1",
@@ -61,6 +61,7 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "express-async-errors": "^3.1.1",
+    "express-fingerprint": "^1.2.2",
     "helmet": "^8.1.0",
     "hpp": "^0.2.3",
     "http-status-codes": "^2.3.0",

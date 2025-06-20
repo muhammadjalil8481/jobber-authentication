@@ -9,6 +9,7 @@ const sequelieConfig: SequelizeConfig = {
     host: config.MYSQL_HOST,
     port: Number(config.MYSQL_PORT),
     username: config.MYSQL_USER,
+    logging: false,
     password: config.MYSQL_PASSWORD,
     database: config.MYSQL_DATABASE,
     dialectOptions: {

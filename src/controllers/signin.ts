@@ -13,6 +13,9 @@ import {
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { omit } from "lodash";
+import crypto from "crypto";
+import { createFingerprint } from "@authentication/helpers/generateFingerprint";
+// import { v4 as uuidv4 } from "uuid";
 
 export async function signIn(req: Request, res: Response): Promise<void> {
   const { error } = await Promise.resolve(signInSchema.validate(req.body));
@@ -23,12 +26,12 @@ export async function signIn(req: Request, res: Response): Promise<void> {
     );
   }
 
-  const { username, password, browserName, deviceType } = req.body;
+  const { username, password } = req.body;
   const isValidEmail: boolean = isEmail(username);
 
-  const existingUser: IAuthDocument | undefined = !isValidEmail
-    ? await getAuthUserByUsername(username)
-    : await getAuthUserByEmail(username);
+  const existingUser: IAuthDocument | undefined = isValidEmail
+    ? await getAuthUserByEmail(username)
+    : await getAuthUserByUsername(username);
 
   if (!existingUser) {
     throw new BadRequestError(
@@ -48,15 +51,36 @@ export async function signIn(req: Request, res: Response): Promise<void> {
     );
   }
 
-  const userJWT: string = signToken(
-    existingUser.id!,
-    existingUser.email!,
-    existingUser.username!
+  // const userAgent = req.headers["user-agent"] || "";
+  const fingerprint = createFingerprint(req);
+
+  const tokenPaylod = {
+    id: existingUser.id,
+    email: existingUser.email,
+    username: existingUser.username,
+    fingerprint,
+    // userAgent: userAgent,
+  };
+  // const accessTokenId = uuidv4();
+  const accessToken: string = signToken(
+    tokenPaylod,
+    `15m`
+    //  accessTokenId
   );
+  // const refreshTokenId = uuidv4();
+  const refreshToken: string = signToken(
+    tokenPaylod,
+    `7d`
+    // refreshTokenId
+  );
+
   const userData = omit(existingUser, ["password"]);
 
   res.status(StatusCodes.OK).json({
     user: userData,
-    token: userJWT,
+    accessToken: accessToken,
+    refreshToken: refreshToken,
+    message: "User signed in successfully",
+    // fingerprint: fingerprint
   });
 }

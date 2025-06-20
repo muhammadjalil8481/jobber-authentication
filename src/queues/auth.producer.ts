@@ -17,7 +17,9 @@ export async function publishDirectMessage({
 }: DirectProducerParmas) {
   try {
     await channel.assertExchange(exchangeName, "direct");
-    channel.publish(exchangeName, routingKey, Buffer.from(message));
+    channel.publish(exchangeName, routingKey, Buffer.from(message), {
+      persistent: true,
+    });
     log.info(logMessage);
   } catch (error) {
     log.error("AuthService publishDirectMessage() method error", error);

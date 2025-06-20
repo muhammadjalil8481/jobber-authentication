@@ -2,7 +2,6 @@ import { signupSchema } from "@authentication/schemas/signup.schema";
 import {
   createAuthUser,
   getAuthUserByUsernameOrEmail,
-  signToken,
 } from "@authentication/services/auth.service";
 import {
   BadRequestError,
@@ -89,20 +88,14 @@ export async function create(req: Request, res: Response): Promise<void> {
   };
   await publishDirectMessage({
     channel: rabbitMQChannel,
-    exchangeName: "auth_email_exchange",
-    routingKey: "auth_email_key",
+    exchangeName: "auth_ex_verification_email",
+    routingKey: "auth_key_verification_email",
     message: JSON.stringify(messageDetails),
     logMessage: "Verify email message has been sent to notification service.",
   });
 
-  const userJWT: string = signToken(
-    result.id!,
-    result.email!,
-    result.username!
-  );
   res.status(StatusCodes.CREATED).json({
     message: "User created successfully",
     user: result,
-    token: userJWT,
   });
 }

@@ -1,6 +1,6 @@
 import Joi from "joi";
 
-const changePasswordSchema = Joi.object().keys({
+const resetPasswordSchema = Joi.object().keys({
   newPassword: Joi.string().min(6).required().messages({
     "string.base": "newPassword must be a string",
     "string.empty": "newPassword cannot be empty",
@@ -18,4 +18,4 @@ const changePasswordSchema = Joi.object().keys({
     }),
 });
 
-export { changePasswordSchema };
+export { resetPasswordSchema };

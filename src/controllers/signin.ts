@@ -13,9 +13,7 @@ import {
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { omit } from "lodash";
-import crypto from "crypto";
 import { createFingerprint } from "@authentication/helpers/generateFingerprint";
-// import { v4 as uuidv4 } from "uuid";
 
 export async function signIn(req: Request, res: Response): Promise<void> {
   const { error } = await Promise.resolve(signInSchema.validate(req.body));

@@ -4,6 +4,8 @@ import { GatewayRequestVerification } from "@muhammadjalil8481/jobber-shared";
 import { log } from "./logger";
 import fs from "fs";
 import { StatusCodes } from "http-status-codes";
+import { searchRouter } from "./routes/search";
+import { seedRouter } from "./routes/seed";
 
 const publicKey = fs.readFileSync("./public.pem", "utf-8");
 const gatewayMiddleware = GatewayRequestVerification(log, publicKey);
@@ -15,6 +17,8 @@ router.get("/auth-health", (_req: Request, res: Response) => {
 });
 
 router.use(gatewayMiddleware, authRouter);
+router.use(gatewayMiddleware, searchRouter);
+router.use(gatewayMiddleware, seedRouter);
 
 router.use("*", (req: Request, res: Response) => {
   const url = `${req.protocol}://${req.get("host")}${req.originalUrl}`;

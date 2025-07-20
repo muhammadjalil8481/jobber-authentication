@@ -51,6 +51,7 @@
   },
   "dependencies": {
     "@elastic/elasticsearch": "^8.17.1",
+    "@faker-js/faker": "^9.8.0",
     "@muhammadjalil8481/jobber-shared": "^0.7.32",
     "amqplib": "^0.10.8",
     "bcrypt": "^5.1.1",

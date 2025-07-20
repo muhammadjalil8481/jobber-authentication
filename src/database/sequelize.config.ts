@@ -3,7 +3,7 @@ import { Options } from "sequelize";
 
 type SequelizeConfig = Record<string, Options>;
 
-const sequelieConfig: SequelizeConfig = {
+const sequelieConfig : SequelizeConfig = {
   development: {
     dialect: "mysql",
     host: config.MYSQL_HOST,

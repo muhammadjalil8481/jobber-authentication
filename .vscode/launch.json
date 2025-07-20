@@ -4,9 +4,9 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Debug with tsx",
+      "name": "Debug Dev",
       "runtimeExecutable": "npx",
-      "runtimeArgs": ["tsx", "watch", "src/app.ts"],
+      "runtimeArgs": ["npm", "run", "dev"],
     }
   ]
 }

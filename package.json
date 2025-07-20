@@ -10,7 +10,7 @@
     "clean": "rimraf dist",
     "clear": "cross-env CLEAR_CMD=clear",
     "dev": "npm run clear && tsx watch src/app.ts | pino-pretty -C",
-    "build": "npm run clean && tsc --project tsconfig.json && tsc-alias -p tsconfig.json && ts-node tools/copyEmails.ts",
+    "build": "npm run clean && tsc --project tsconfig.json && tsc-alias -p tsconfig.json",
     "test": "jest --coverage=true -w=1 --forceExit --detectOpenHandles --watchAll=false",
     "key": "tsx key-gen.ts",
     "db:create-migration": "npx sequelize-cli migration:generate --name",
@@ -18,7 +18,8 @@
     "db:migrate": "npx sequelize-cli db:migrate",
     "db:migrate:undo": "npx sequelize-cli db:migrate:undo",
     "db:seed": "npx sequelize-cli db:seed:all",
-    "db:seed:undo": "npx sequelize-cli db:seed:undo:all"
+    "db:seed:undo": "npx sequelize-cli db:seed:undo:all",
+    "generate-config": "tsx generateDBConfig.ts"
   },
   "keywords": [],
   "author": "",

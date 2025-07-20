@@ -1,36 +1,20 @@
 import { config } from "@authentication/config";
 import { AuthModel } from "@authentication/models/auth.model";
-import { publishDirectMessage } from "@authentication/queues/auth.producer";
-import { rabbitMQChannel } from "@authentication/server";
 import {
   firstLetterUppercase,
   IAuthDocument,
 } from "@muhammadjalil8481/jobber-shared";
 import { sign } from "jsonwebtoken";
 import { omit } from "lodash";
-import { Model, Op } from "sequelize";
+import { Model, Op, Transaction } from "sequelize";
 import type { StringValue } from "ms";
 
 export async function createAuthUser(
-  data: IAuthDocument
+  data: IAuthDocument,
+  transaction?: Transaction
 ): Promise<IAuthDocument> {
-  const result = await AuthModel.create(data);
+  const result = await AuthModel.create(data, { transaction });
   const authUser = result.dataValues;
-  const messageDetails = {
-    username: authUser.username,
-    email: authUser.email,
-    profilePicture: authUser.profilePicture,
-    country: authUser.country,
-    createdAt: authUser.createdAt,
-    type: "auth",
-  };
-  await publishDirectMessage({
-    channel: rabbitMQChannel,
-    exchangeName: "jobber-buyer-update",
-    routingKey: "user-buyer",
-    message: JSON.stringify(messageDetails),
-    logMessage: "Buyer details sent to buyer service",
-  });
   const userData: IAuthDocument = omit(authUser, ["password"]);
   return userData;
 }
@@ -153,7 +137,7 @@ export async function updatePassword(
 
 export function signToken(
   payload: object,
-  maxAge: StringValue,
+  maxAge: StringValue
   // jwtId: string
 ): string {
   return sign(payload, config.JWT_TOKEN_SECRET, {
